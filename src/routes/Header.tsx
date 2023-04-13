@@ -21,7 +21,7 @@ const Header = () => {
             <Outlet />
 
             <div className="flex h-40 items-center justify-center bg-gray-900">
-                <h3 className="text-white">Header</h3>
+                <h3 className="text-white">Footer</h3>
             </div>
         </div>
     );
