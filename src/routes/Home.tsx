@@ -25,6 +25,7 @@ export interface Data {
 
 const Home = () => {
     const [posts, setPosts] = useState<Data[]>();
+    const [originalPosts, setOriginalPosts] = useState<Data[]>();
     const postCollection = collection(db, "posts");
     const [recent, setRecent] = useState(false);
     const [recentStyle, setRecentStyle] = useState("brightness-100");
@@ -37,6 +38,13 @@ const Home = () => {
         const getPosts = async () => {
             const data = await getDocs(postCollection);
             setPosts(
+                data.docs.map((doc) => ({
+                    ...doc.data(),
+                    id: doc.id,
+                })) as Data[]
+            );
+
+            setOriginalPosts(
                 data.docs.map((doc) => ({
                     ...doc.data(),
                     id: doc.id,
@@ -59,9 +67,13 @@ const Home = () => {
                         (a, b) => a.posted.seconds - b.posted.seconds
                     )
                 );
+            } else {
+                setPosts(originalPosts);
             }
         };
-    }, [recent, popular]);
+
+        filterPosts();
+    }, [recent, popular, posts]);
 
     const handleRecent = () => {
         if (!recent) {
@@ -89,6 +101,11 @@ const Home = () => {
             setPopular(false);
             setPopularStyle("brightness-100");
         }
+    };
+
+    const handleSearch = () => {
+        setSearch(value);
+        setValue("");
     };
 
     const getTime = (seconds: number) => {
@@ -202,10 +219,6 @@ const Home = () => {
 
             return date;
         }
-    };
-
-    const handleSearch = () => {
-        setSearch(value);
     };
 
     if (posts) {
