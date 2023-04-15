@@ -6,9 +6,9 @@ import {
     updateDoc,
     deleteDoc,
     doc,
+    getDoc,
 } from "firebase/firestore";
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import Posts from "../components/Posts";
 
 export interface Data {
@@ -17,6 +17,7 @@ export interface Data {
     content: string;
     upvotes: number;
     posted: number;
+    image: string;
 }
 [];
 
