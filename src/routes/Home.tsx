@@ -16,10 +16,7 @@ export interface Data {
     title: string;
     content: string;
     upvotes: number;
-    posted: {
-        nanoseconds: number;
-        seconds: number;
-    };
+    posted: number;
 }
 [];
 
@@ -59,13 +56,11 @@ const Home = () => {
         const filterPosts = () => {
             if (!recent && popular) {
                 setPosts((prevPosts) =>
-                    prevPosts?.sort((a, b) => a.upvotes - b.upvotes)
+                    prevPosts?.sort((a, b) => b.upvotes - a.upvotes)
                 );
             } else if (recent && !popular) {
                 setPosts((prevPosts) =>
-                    prevPosts?.sort(
-                        (a, b) => a.posted.seconds - b.posted.seconds
-                    )
+                    prevPosts?.sort((a, b) => b.posted - a.posted)
                 );
             } else {
                 setPosts(originalPosts);
@@ -103,9 +98,9 @@ const Home = () => {
         }
     };
 
-    const handleSearch = () => {
+    const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
         setSearch(value);
-        setValue("");
     };
 
     const getTime = (seconds: number) => {
@@ -240,21 +235,22 @@ const Home = () => {
                             Most Popular
                         </button>
                     </div>
-                    <div className="flex items-center justify-center">
+
+                    <form
+                        className="flex items-center justify-center"
+                        onSubmit={handleSearch}
+                    >
                         <input
-                            type="text"
+                            type="search"
                             placeholder="enter search"
                             className="rounded bg-gray-200 md:px-2 md:py-2"
                             value={value}
                             onChange={(e) => setValue(e.target.value)}
                         />
-                        <button
-                            className="rounded bg-blue-900 px-2 py-1 text-xs text-white md:px-2 md:py-2 md:text-lg"
-                            onClick={handleSearch}
-                        >
+                        <button className="rounded bg-blue-900 px-2 py-1 text-xs text-white md:px-2 md:py-2 md:text-lg">
                             Search
                         </button>
-                    </div>
+                    </form>
                 </div>
 
                 <Posts posts={posts} search={search} getTime={getTime} />

@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { Data } from "../routes/Home";
+import { useState, useEffect } from "react";
 
 interface Props {
     posts: Data[];
@@ -8,10 +9,12 @@ interface Props {
 }
 
 const Posts: FC<Props> = (props) => {
-    if (props.posts) {
-        return (
-            <div className="min-h-screen overflow-scroll">
-                {props.posts.map((post, index) => {
+    const [currPosts, setCurrPosts] = useState<React.ReactNode>(null);
+
+    useEffect(() => {
+        const renderPosts = () => {
+            setCurrPosts(
+                props.posts.map((post, index) => {
                     if (props.search == "") {
                         return (
                             <div
@@ -19,9 +22,8 @@ const Posts: FC<Props> = (props) => {
                                 className="flex h-48 min-w-full flex-col items-start justify-evenly rounded-2xl bg-gray-300 p-4 md:items-center"
                             >
                                 <h3 className="text-center text-black">
-                                    Posted:{" "}
-                                    {props.getTime(post.posted.seconds).since}{" "}
-                                    {props.getTime(post.posted.seconds).multi}
+                                    Posted: {props.getTime(post.posted).since}{" "}
+                                    {props.getTime(post.posted).multi}
                                 </h3>
                                 <h2 className="text-center text-xl font-bold text-black">
                                     {post.title}
@@ -43,14 +45,8 @@ const Posts: FC<Props> = (props) => {
                                 >
                                     <h3 className="text-center text-black">
                                         Posted:{" "}
-                                        {
-                                            props.getTime(post.posted.seconds)
-                                                .since
-                                        }{" "}
-                                        {
-                                            props.getTime(post.posted.seconds)
-                                                .multi
-                                        }
+                                        {props.getTime(post.posted).since}{" "}
+                                        {props.getTime(post.posted).multi}
                                     </h3>
                                     <h2 className="text-center text-xl font-bold text-black">
                                         {post.title}
@@ -62,7 +58,17 @@ const Posts: FC<Props> = (props) => {
                             );
                         }
                     }
-                })}
+                })
+            );
+        };
+
+        renderPosts();
+    }, [props.posts, props.search]);
+
+    if (props.posts) {
+        return (
+            <div className="flex min-h-screen flex-col gap-6 overflow-scroll">
+                {currPosts}
             </div>
         );
     } else {
