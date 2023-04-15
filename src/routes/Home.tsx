@@ -18,36 +18,37 @@ export interface Data {
     upvotes: number;
     posted: number;
     image: string;
+    comments: string[];
 }
 [];
 
 const Home = () => {
     const [posts, setPosts] = useState<Data[]>();
-    const [originalPosts, setOriginalPosts] = useState<Data[]>();
     const postCollection = collection(db, "posts");
     const [recent, setRecent] = useState(false);
     const [recentStyle, setRecentStyle] = useState("brightness-100");
-    const [popular, setPopular] = useState(false);
-    const [popularStyle, setPopularStyle] = useState("brightness-100");
+    const [popular, setPopular] = useState(true);
+    const [popularStyle, setPopularStyle] = useState("brightness-200");
     const [search, setSearch] = useState("");
     const [value, setValue] = useState("");
 
     useEffect(() => {
         const getPosts = async () => {
             const data = await getDocs(postCollection);
-            setPosts(
-                data.docs.map((doc) => ({
-                    ...doc.data(),
-                    id: doc.id,
-                })) as Data[]
-            );
+            let postsTemp = data.docs.map((doc) => ({
+                ...doc.data(),
+                id: doc.id,
+            })) as Data[];
 
-            setOriginalPosts(
-                data.docs.map((doc) => ({
-                    ...doc.data(),
-                    id: doc.id,
-                })) as Data[]
-            );
+            if (!recent && popular) {
+                let postsCopy = [...postsTemp];
+                postsCopy.sort((a, b) => b.upvotes - a.upvotes);
+                setPosts(postsCopy);
+            } else if (recent && !popular) {
+                let postsCopy = [...postsTemp];
+                postsCopy.sort((a, b) => b.posted - a.posted);
+                setPosts(postsCopy);
+            }
         };
 
         getPosts();
@@ -64,9 +65,6 @@ const Home = () => {
                     let postsCopy = [...posts];
                     postsCopy.sort((a, b) => b.posted - a.posted);
                     setPosts(postsCopy);
-                } else if (originalPosts && !recent && !popular) {
-                    let postsCopy = [...originalPosts];
-                    setPosts(postsCopy);
                 }
             }
         };
@@ -75,31 +73,17 @@ const Home = () => {
     }, [recent, popular]);
 
     const handleRecent = () => {
-        if (!recent) {
-            setPopular(false);
-            setPopularStyle("brightness-100");
-            setRecent(true);
-            setRecentStyle("brightness-200");
-        } else {
-            setPopular(false);
-            setPopularStyle("brightness-100");
-            setRecent(false);
-            setRecentStyle("brightness-100");
-        }
+        setPopular(false);
+        setPopularStyle("brightness-100");
+        setRecent(true);
+        setRecentStyle("brightness-200");
     };
 
     const handlePopular = () => {
-        if (!popular) {
-            setRecent(false);
-            setRecentStyle("brightness-100");
-            setPopular(true);
-            setPopularStyle("brightness-200");
-        } else {
-            setRecent(false);
-            setRecentStyle("brightness-100");
-            setPopular(false);
-            setPopularStyle("brightness-100");
-        }
+        setRecent(false);
+        setRecentStyle("brightness-100");
+        setPopular(true);
+        setPopularStyle("brightness-200");
     };
 
     const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {

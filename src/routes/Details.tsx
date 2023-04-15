@@ -20,6 +20,7 @@ const Details = () => {
     const [postData, setPostData] = useState<Data>();
     const [read, setRead] = useState(0);
     const navigate = useNavigate();
+    const [comment, setComment] = useState("");
 
     useEffect(() => {
         const getPost = async () => {
@@ -44,7 +45,21 @@ const Details = () => {
     const handleDelete = async () => {
         const postRef = doc(db, "posts", id);
         await deleteDoc(postRef);
+        alert("Post Deleted");
         navigate("/");
+    };
+
+    const handleComment = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        if (comment != "" && postData) {
+            const postRef = doc(db, "posts", id);
+            let postArray = [...postData.comments, comment];
+            await updateDoc(postRef, { comments: postArray });
+
+            setComment("");
+            setRead(read + 1);
+        }
     };
 
     const getTime = (seconds: number) => {
@@ -162,18 +177,20 @@ const Details = () => {
 
     if (postData) {
         return (
-            <div className="flex h-screen items-center justify-center px-4 md:px-20">
-                <div className="flex max-h-full min-w-full flex-col items-start justify-between bg-gray-200">
-                    <h3 className="text-left text-black">
+            <div className="flex min-h-screen items-center justify-center px-4 md:px-20">
+                <div className="flex max-h-full min-w-full flex-col items-start justify-center gap-10 rounded-xl bg-gray-200 px-4 py-6">
+                    <h3 className="text-left text-black md:text-lg">
                         Posted: {getTime(postData.posted).since}{" "}
                         {getTime(postData.posted).multi}
                     </h3>
-                    <h1 className="text-left font-bold text-black">
+                    <h1 className="text-left font-bold text-black md:text-3xl">
                         {postData.title}
                     </h1>
-                    <h2 className="text-left text-black">{postData.content}</h2>
+                    <h2 className="text-left text-black md:text-xl">
+                        {postData.content}
+                    </h2>
                     <img
-                        className="h-auto w-60"
+                        className="h-auto w-60 md:w-96 lg:w-2/4"
                         src={postData.image}
                         alt="post image"
                     />
@@ -203,6 +220,28 @@ const Details = () => {
                                 🗑️
                             </div>
                         </div>
+                    </div>
+
+                    <div className="item-center flex min-w-full flex-col justify-center rounded bg-white px-2 py-4">
+                        <div className="flex min-w-full flex-col items-start justify-center overflow-scroll">
+                            {postData.comments.map((value, index) => (
+                                <h2
+                                    className="text-left text-black"
+                                    key={index}
+                                >
+                                    - {value}
+                                </h2>
+                            ))}
+                        </div>
+                        <form onSubmit={handleComment}>
+                            <input
+                                type="text"
+                                placeholder="Leave a comment..."
+                                value={comment}
+                                onChange={(e) => setComment(e.target.value)}
+                                className="min-w-full rounded border-2 border-gray-200"
+                            />
+                        </form>
                     </div>
                 </div>
             </div>
