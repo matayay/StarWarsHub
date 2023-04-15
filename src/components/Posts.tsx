@@ -12,7 +12,7 @@ const Posts: FC<Props> = (props) => {
     const [currPosts, setCurrPosts] = useState<React.ReactNode>(null);
 
     useEffect(() => {
-        const renderPosts = () => {
+        const renderPosts = async () => {
             setCurrPosts(
                 props.posts.map((post, index) => {
                     if (props.search == "") {
@@ -21,14 +21,14 @@ const Posts: FC<Props> = (props) => {
                                 key={index}
                                 className="flex h-48 min-w-full flex-col items-start justify-evenly rounded-2xl bg-gray-300 p-4 md:items-center"
                             >
-                                <h3 className="text-center text-black">
+                                <h3 className="text-left text-black">
                                     Posted: {props.getTime(post.posted).since}{" "}
                                     {props.getTime(post.posted).multi}
                                 </h3>
-                                <h2 className="text-center text-xl font-bold text-black">
+                                <h2 className="text-left text-xl font-bold text-black">
                                     {post.title}
                                 </h2>
-                                <h3 className="text-center text-black">
+                                <h3 className="text-left text-black">
                                     Upvotes: {post.upvotes}
                                 </h3>
                             </div>

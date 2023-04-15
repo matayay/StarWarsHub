@@ -54,21 +54,24 @@ const Home = () => {
 
     useEffect(() => {
         const filterPosts = () => {
-            if (!recent && popular) {
-                setPosts((prevPosts) =>
-                    prevPosts?.sort((a, b) => b.upvotes - a.upvotes)
-                );
-            } else if (recent && !popular) {
-                setPosts((prevPosts) =>
-                    prevPosts?.sort((a, b) => b.posted - a.posted)
-                );
-            } else {
-                setPosts(originalPosts);
+            if (posts) {
+                if (!recent && popular) {
+                    let postsCopy = [...posts];
+                    postsCopy.sort((a, b) => b.upvotes - a.upvotes);
+                    setPosts(postsCopy);
+                } else if (recent && !popular) {
+                    let postsCopy = [...posts];
+                    postsCopy.sort((a, b) => b.posted - a.posted);
+                    setPosts(postsCopy);
+                } else if (originalPosts && !recent && !popular) {
+                    let postsCopy = [...originalPosts];
+                    setPosts(postsCopy);
+                }
             }
         };
 
         filterPosts();
-    }, [recent, popular, posts]);
+    }, [recent, popular]);
 
     const handleRecent = () => {
         if (!recent) {
