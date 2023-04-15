@@ -76,12 +76,10 @@ const Posts: FC<Props> = (props) => {
 
     if (props.posts) {
         return (
-            <div className="flex min-h-screen flex-col gap-6 overflow-scroll">
-                {currPosts}
-            </div>
+            <div className="flex min-h-screen flex-col gap-6">{currPosts}</div>
         );
     } else {
-        return <div className="min-h-screen overflow-scroll"></div>;
+        return <div className="min-h-screen"></div>;
     }
 };
 

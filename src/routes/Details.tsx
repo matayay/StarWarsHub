@@ -222,8 +222,8 @@ const Details = () => {
                         </div>
                     </div>
 
-                    <div className="item-center flex min-w-full flex-col justify-center rounded bg-white px-2 py-4">
-                        <div className="flex min-w-full flex-col items-start justify-center overflow-scroll">
+                    <div className="item-center flex min-w-full flex-col justify-center gap-4 rounded bg-white px-2 py-4">
+                        <div className="flex h-24 min-w-full flex-col items-start overflow-scroll">
                             {postData.comments.map((value, index) => (
                                 <h2
                                     className="text-left text-black"
