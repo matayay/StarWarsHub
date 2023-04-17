@@ -31,6 +31,8 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
+![](./src/assets/starwars.gif)
+
 GIF created with Kap
 
 ## Notes
