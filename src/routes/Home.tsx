@@ -245,7 +245,7 @@ const Home = () => {
             </div>
         );
     } else {
-        return <div></div>;
+        return <div className="min-h-screen"></div>;
     }
 };
 
