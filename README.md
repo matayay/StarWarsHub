@@ -1,15 +1,11 @@
-# Web Development Final Project - _Star Wars Hub_
+# Star Wars Hub
 
-Submitted by: **Matayay Karuna**
+Author: **Matayay Karuna**
 
 This web app: **Star Wars forum that allows users to create, edit, and delete posts.
 Can also like and comment on posts. Post content includes titel, body, and an optional image url.**
 
-Time spent: **20** hours spent in total
-
-## Required Features
-
-The following **required** functionality is completed:
+## Features
 
 -   [x] **A create form that allows the user to create posts**
 -   [x] **Posts have a title and optionally additional textual content and/or an image added as an external image URL**
@@ -22,10 +18,6 @@ The following **required** functionality is completed:
 -   [x] **Users can leave comments underneath a post on the post's separate page**
 -   [x] **Each post should have an upvote button on the post's page. Each click increases its upvotes count by one and users can upvote any number of times**
 -   [x] **A previously created post can be edited or deleted from its post page**
-
-The following **additional** features are implemented:
-
--   [x] **Website is fully mobile compatible.**
 
 ## Video Walkthrough
 
