@@ -3,7 +3,7 @@
 Author: **Matayay Karuna**
 
 This web app: **Star Wars forum that allows users to create, edit, and delete posts.
-Can also like and comment on posts. Post content includes titel, body, and an optional image url.**
+Can also like and comment on posts. Post content includes title, body, and an optional image url.**
 
 ## Features
 
